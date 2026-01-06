@@ -1,76 +1,52 @@
-// ================== DOM ==================
-const splash = document.querySelector('.splash-container');
-const authScreen = document.getElementById('authScreen');
+const supabase = window.supabase.createClient(
+  'https://zdmtwnvaksdbvutrpcnr.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpkbXR3bnZha3NkYnZ1dHJwY25yIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc1Mjg4NjcsImV4cCI6MjA4MzEwNDg2N30.QztruYbzPeF8CrZmT_FhMw6VHc1-289qqJ8Qs4Z7nVc'
+);
 
-const emailBox = document.getElementById('authEmail');
-const codeBox = document.getElementById('authCode');
-
-const emailInput = document.getElementById('emailInput');
-const codeInput = document.getElementById('codeInput');
+// SPLASH → AUTH
+setTimeout(() => {
+  document.querySelector('.splash-container').style.display = 'none';
+  document.getElementById('authScreen').style.display = 'flex';
+}, 6000);
 
 let currentEmail = '';
 
-// ================== SPLASH → AUTH ==================
-setTimeout(() => {
-  splash.style.display = 'none';
-  authScreen.style.display = 'flex';
-}, 6000);
-
-// ================== SEND CODE ==================
+// SEND CODE
 async function sendCode() {
-  const email = emailInput.value.trim();
+  const email = document.getElementById('emailInput').value.trim();
   if (!email) return;
 
   currentEmail = email;
 
-  const { error } = await window.supabase.auth.signInWithOtp({
+  const { error } = await supabase.auth.signInWithOtp({
     email,
     options: { shouldCreateUser: true }
   });
 
   if (error) {
-    console.error('OTP error:', error.message);
+    console.error(error.message);
     return;
   }
 
-  emailBox.style.display = 'none';
-  codeBox.style.display = 'block';
+  document.getElementById('authEmail').style.display = 'none';
+  document.getElementById('authCode').style.display = 'block';
 }
 
-// ================== VERIFY CODE ==================
+// VERIFY CODE
 async function verifyCode() {
-  const code = codeInput.value.trim();
+  const code = document.getElementById('codeInput').value.trim();
   if (!code) return;
 
-  const { data, error } = await window.supabase.auth.verifyOtp({
+  const { data, error } = await supabase.auth.verifyOtp({
     email: currentEmail,
     token: code,
     type: 'email'
   });
 
   if (error) {
-    console.error('Verify error:', error.message);
+    console.error(error.message);
     return;
   }
 
-  const user = data.user;
-
-  const { data: profile } = await window.supabase
-    .from('profiles')
-    .select('*')
-    .eq('id', user.id)
-    .single();
-
-  if (!profile) {
-    const username = prompt('Введите username');
-    if (!username) return;
-
-    await window.supabase.from('profiles').insert({
-      id: user.id,
-      email: user.email,
-      username
-    });
-  }
-
-  window.location.href = 'chats.html';
+  window.location.href = '/chats.html';
 }
