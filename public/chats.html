@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Absgram — Чаты</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="chat-app">
+
+  <!-- HEADER -->
+  <header class="chat-header">
+    <h1>Absgram</h1>
+    <button id="profileBtn">👤</button>
+  </header>
+
+  <!-- SEARCH -->
+  <div class="chat-search">
+    <input id="searchInput" placeholder="Поиск пользователей">
+  </div>
+
+  <!-- CHAT LIST -->
+  <div class="chat-list" id="chatList">
+    <!-- динамически -->
+  </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="chats.js"></script>
+</body>
+</html>
