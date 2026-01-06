@@ -40,6 +40,22 @@ function draw(m) {
   const div = document.createElement('div');
   div.className = `msg ${m.sender === myId ? 'me' : 'other'}`;
   div.textContent = m.text;
+
+  if (m.sender === myId) {
+    let pressTimer;
+
+    div.addEventListener('touchstart', () => {
+      pressTimer = setTimeout(() => {
+        selectedMessageId = m.id;
+        menu.classList.remove('hidden');
+      }, 500);
+    });
+
+    div.addEventListener('touchend', () => {
+      clearTimeout(pressTimer);
+    });
+  }
+
   messagesEl.appendChild(div);
 }
 
@@ -63,4 +79,21 @@ function subscribe() {
       { event: 'INSERT', schema: 'public', table: 'messages' },
       payload => draw(payload.new)
     ).subscribe();
+}
+async function deleteMessage() {
+  await supabase.from('messages').delete().eq('id', selectedMessageId);
+  menu.classList.add('hidden');
+  loadMessages();
+}
+
+async function editMessage() {
+  const newText = prompt('Новое сообщение');
+  if (!newText) return;
+
+  await supabase.from('messages')
+    .update({ text: newText })
+    .eq('id', selectedMessageId);
+
+  menu.classList.add('hidden');
+  loadMessages();
 }
