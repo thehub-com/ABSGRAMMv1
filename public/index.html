@@ -209,7 +209,7 @@ body {
     </div>
 
     <a href="http://supportabs.tilda.ws/" class="website-link" target="_blank">
-      abs-company.com
+      ABScompany.com
     </a>
 
     <div class="loading-bar">
@@ -218,22 +218,21 @@ body {
   </div>
 </div>
 
-<!-- ================= AUTH ================= -->
+  <!-- ================= AUTH ================= -->
 <div id="authScreen">
-  <div class="auth-box">
+
+  <!-- EMAIL -->
+  <div class="auth-box" id="authEmail">
     <h2>Вход / Регистрация</h2>
-    <input type="email" placeholder="Email">
-    <button>Далее</button>
+    <input id="emailInput" type="email" placeholder="Введите email">
+    <button onclick="sendCode()">Далее</button>
   </div>
+
+  <!-- CODE -->
+  <div class="auth-box hidden" id="authCode">
+    <h2>Введите код</h2>
+    <input id="codeInput" placeholder="Код из письма">
+    <button onclick="verifyCode()">Войти</button>
+  </div>
+
 </div>
-
-<script>
-  // Переход со Splash на Auth
-  setTimeout(() => {
-    document.querySelector('.splash-container').style.display = 'none';
-    document.getElementById('authScreen').style.display = 'flex';
-  }, 6000);
-</script>
-
-</body>
-</html>
