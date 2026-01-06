@@ -330,3 +330,27 @@ body {
   background: #ff9800;
   font-weight: bold;
 }
+.msg-menu {
+  position: fixed;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #111827;
+  border-radius: 14px;
+  padding: 10px;
+  display: flex;
+  gap: 10px;
+  box-shadow: 0 0 20px rgba(255,152,0,.4);
+}
+
+.msg-menu button {
+  background: none;
+  border: none;
+  color: white;
+  padding: 10px;
+  font-size: 14px;
+}
+
+.hidden {
+  display: none;
+}
