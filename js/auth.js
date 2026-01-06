@@ -1,26 +1,38 @@
-const supabase = window.supabase.createClient(
-  'https://zdmtwnvaksdbvutrpcnr.supabase.co',
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpkbXR3bnZha3NkYnZ1dHJwY25yIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc1Mjg4NjcsImV4cCI6MjA4MzEwNDg2N30.QztruYbzPeF8CrZmT_FhMw6VHc1-289qqJ8Qs4Z7nVc'
-);
+// js/auth.js
 
-// SPLASH → AUTH
-setTimeout(() => {
-  document.querySelector('.splash-container').style.display = 'none';
-  document.getElementById('authScreen').style.display = 'flex';
-}, 6000);
+document.addEventListener('DOMContentLoaded', async () => {
+  const splash = document.querySelector('.splash-container');
+  const authScreen = document.getElementById('authScreen');
+
+  // splash → auth
+  setTimeout(() => {
+    splash.style.display = 'none';
+    authScreen.style.display = 'flex';
+  }, 6000);
+
+  // если уже есть сессия → сразу в чаты
+  const { data } = await supabase.auth.getSession();
+  if (data.session) {
+    window.location.href = 'chats.html';
+  }
+});
 
 let currentEmail = '';
 
-// SEND CODE
+// ================= SEND CODE =================
 async function sendCode() {
-  const email = document.getElementById('emailInput').value.trim();
+  const emailInput = document.getElementById('emailInput');
+  const email = emailInput.value.trim();
+
   if (!email) return;
 
   currentEmail = email;
 
   const { error } = await supabase.auth.signInWithOtp({
     email,
-    options: { shouldCreateUser: true }
+    options: {
+      shouldCreateUser: true
+    }
   });
 
   if (error) {
@@ -32,9 +44,11 @@ async function sendCode() {
   document.getElementById('authCode').style.display = 'block';
 }
 
-// VERIFY CODE
+// ================= VERIFY CODE =================
 async function verifyCode() {
-  const code = document.getElementById('codeInput').value.trim();
+  const codeInput = document.getElementById('codeInput');
+  const code = codeInput.value.trim();
+
   if (!code) return;
 
   const { data, error } = await supabase.auth.verifyOtp({
@@ -48,5 +62,26 @@ async function verifyCode() {
     return;
   }
 
-  window.location.href = '/chats.html';
+  const user = data.user;
+
+  // профиль
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('id', user.id)
+    .single();
+
+  if (!profile) {
+    const username = prompt('Введите username');
+    if (!username) return;
+
+    await supabase.from('profiles').insert({
+      id: user.id,
+      email: user.email,
+      username
+    });
+  }
+
+  // ✅ ПЕРЕХОД В ЧАТЫ
+  window.location.href = 'chats.html';
 }
