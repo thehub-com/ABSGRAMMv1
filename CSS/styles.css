@@ -398,3 +398,29 @@ body {
   display:block;
   border:2px solid #ff9800;
 }
+.search-box {
+  width:100%;
+  max-width:420px;
+  padding:20px;
+}
+
+.search-box input {
+  width:100%;
+  padding:14px;
+  border-radius:14px;
+  border:none;
+  margin-bottom:15px;
+}
+
+.user-item {
+  padding:14px;
+  border-radius:14px;
+  background:rgba(255,255,255,.05);
+  margin-bottom:10px;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.user-item:hover {
+  background:rgba(255,152,0,.15);
+}
