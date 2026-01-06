@@ -40,6 +40,10 @@ function render(list) {
         <p>Нажмите, чтобы написать</p>
       </div>
     `;
+
+    div.onclick = () => {
+  location.href = `chat.html?uid=${u.id}`;
+};
     chatList.appendChild(div);
   });
 }
