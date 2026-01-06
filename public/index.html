@@ -236,3 +236,34 @@ body {
   </div>
 
 </div>
+<!-- ================= JS ================= -->
+<script>
+  // splash → auth
+  setTimeout(() => {
+    document.querySelector('.splash-container').style.display = 'none';
+    document.getElementById('authScreen').style.display = 'flex';
+  }, 6000);
+
+  function sendCode() {
+    const email = document.getElementById('emailInput').value;
+    if (!email) {
+      alert('Введите email');
+      return;
+    }
+    // пока без supabase — просто имитация
+    document.getElementById('authEmail').style.display = 'none';
+    document.getElementById('authCode').style.display = 'block';
+  }
+
+  function verifyCode() {
+    const code = document.getElementById('codeInput').value;
+    if (!code) {
+      alert('Введите код');
+      return;
+    }
+    alert('Успешный вход (пока тест)');
+  }
+</script>
+
+</body>
+</html>
