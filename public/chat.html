@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Absgram — Диалог</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="dialog">
+
+  <!-- HEADER -->
+  <header class="dialog-header">
+    <button onclick="history.back()">←</button>
+    <span id="chatUsername">Пользователь</span>
+  </header>
+
+  <!-- MESSAGES -->
+  <div class="messages" id="messages"></div>
+
+  <!-- INPUT -->
+  <div class="message-input">
+    <input id="messageInput" placeholder="Сообщение">
+    <button onclick="sendMessage()">➤</button>
+  </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="chat.js"></script>
+</body>
+</html>
